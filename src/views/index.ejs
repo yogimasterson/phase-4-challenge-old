@@ -1,0 +1,33 @@
+<%- include ./partials/header.ejs %>
+
+<%- include ./partials/nav.ejs %>
+
+  <div class="parallax-container">
+    <div class="parallax"><img src="https://assets3.thrillist.com/v1/image/1531235/size/tmg-slideshow_l.jpg"></div>
+  </div>
+
+  <div class="row">
+    <div class="col s9 push-s3">
+      <div class="recent-reviews">
+        <h2>Recent Reviews</h2>
+
+      </div>
+    </div>
+    <div class="col s3 pull-s9">
+      <div class="album-list">
+        <h2>Records</h2>
+        <% albums.forEach(function(album) { %>
+          <div>
+            <h5>
+              <a href="/albums/<%= album.id %>">
+                <%= album.title %>
+              </a>
+            </h5>
+            <span><%= album.artist %></span>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+
+<%- include ./partials/footer.ejs %>
