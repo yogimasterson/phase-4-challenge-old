@@ -2,26 +2,26 @@ const router = require('express').Router()
 const db = require('../../db/index')
 
 router.get('/', (req, res) => {
-  db.getAlbums((error, albums) => {
-    if (error) {
-      res.status(500).render('error', {error})
-    } else {
-      res.render('index', {albums})
-    }
-  })
+  Promise.all([db.getAlbums(), db.getReviews()])
+    .then(([albums, reviews]) => {
+      res.render('index', {albums, reviews})
+    })
+    .catch((error) => {
+      res.status(500).render('common/error', {error})
+    })
 })
 
 router.get('/albums/:albumID', (req, res) => {
   const albumID = req.params.albumID
 
-  db.getAlbumsByID(albumID, (error, albums) => {
-    if (error) {
-      res.status(500).render('error', {error})
-    } else {
+  Promise.all([db.getAlbumsByID(albumID), db.getReviewsById()])
+    .then((albums, reviews) => {
       const album = albums[0]
-      res.render('album', {album})
-    }
-  })
+      res.render('album', {album, reviews})
+    })
+    .catch((error) => {
+      res.status(500).render('common/error', {error})
+    })
 })
 
 module.exports = router
